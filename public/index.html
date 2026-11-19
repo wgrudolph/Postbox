@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Postbox</title>
+  <meta name="description" content="A quiet place to write and send posts.">
+  <meta name="theme-color" content="#FAF8F4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161615" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Postbox">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/newsreader-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <!-- Locked -->
+  <main id="screen-locked" class="screen centered" hidden>
+    <h1 class="wordmark">Postbox</h1>
+    <form id="login-form" class="login" autocomplete="on">
+      <label class="visually-hidden" for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+      <button type="submit" class="button">Enter</button>
+    </form>
+    <p id="login-error" class="note" role="status" aria-live="polite"></p>
+  </main>
+
+  <!-- Connect -->
+  <main id="screen-connect" class="screen centered" hidden>
+    <h1 class="wordmark">Postbox</h1>
+    <p class="lede">Connect your X account to start posting. Postbox can only send posts. It can't read anything.</p>
+    <a class="button" href="/auth/x/start">Connect X</a>
+    <p id="connect-note" class="note" role="status" aria-live="polite"></p>
+    <button type="button" class="text-button footer-link" data-action="logout">Log out</button>
+  </main>
+
+  <!-- Compose -->
+  <main id="screen-compose" class="screen compose" hidden>
+    <div id="composer" class="composer">
+      <div id="blocks" class="blocks"></div>
+      <button type="button" id="add-post" class="text-button add-post">+ Add to thread</button>
+      <div class="send-row">
+        <p id="send-error" class="note send-error" role="status" aria-live="polite" hidden>
+          <span id="send-error-text"></span>
+          <button type="button" id="dismiss-error" class="text-button">Dismiss</button>
+        </p>
+        <button type="button" id="send" class="send" disabled>Send</button>
+      </div>
+    </div>
+    <p id="sent" class="sent" aria-live="polite" hidden>Sent.</p>
+    <footer class="footer">
+      <button type="button" id="open-settings" class="text-button footer-link">Settings</button>
+    </footer>
+  </main>
+
+  <!-- Settings sheet -->
+  <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+  <section id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-handle" hidden>
+    <p id="sheet-handle" class="sheet-handle">Posting as <span id="handle"></span></p>
+    <button type="button" class="sheet-item" id="disconnect">Disconnect X</button>
+    <button type="button" class="sheet-item" data-action="logout">Log out</button>
+    <button type="button" class="sheet-item sheet-close" id="close-settings">Close</button>
+  </section>
+
+  <template id="block-template">
+    <div class="block">
+      <button type="button" class="remove-block" aria-label="Remove this post">×</button>
+      <label class="visually-hidden">Post text</label>
+      <textarea class="post-text" rows="2" placeholder="What's on your mind?"></textarea>
+      <div class="thumbs"></div>
+      <div class="block-tools">
+        <label class="image-button" title="Add images">
+          <input type="file" accept="image/jpeg,image/png,image/webp" multiple class="visually-hidden">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2.5"/>
+            <circle cx="8.5" cy="9.5" r="1.75"/>
+            <path d="M21 15.5l-5-5-9 9.5"/>
+          </svg>
+          <span class="visually-hidden">Add images</span>
+        </label>
+        <span class="counter" aria-live="polite"></span>
+      </div>
+    </div>
+  </template>
+</body>
+</html>

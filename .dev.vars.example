@@ -1,0 +1,7 @@
+# Copy to .dev.vars for `npm run dev`. Never commit .dev.vars.
+X_CLIENT_ID=your-client-id
+X_CLIENT_SECRET=your-client-secret
+APP_PASSWORD=pick-a-password
+SESSION_SECRET=paste-output-of-openssl-rand-base64-32
+TOKEN_ENC_KEY=paste-output-of-openssl-rand-base64-32
+PUBLIC_URL=http://127.0.0.1:8787

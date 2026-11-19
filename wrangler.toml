@@ -1,0 +1,25 @@
+name = "postbox"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+# Static frontend from ./public. The Worker runs first on every request so it
+# can add security headers; /api/* and /auth/* are handled in code, everything
+# else is passed to the assets binding.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# Paste the id printed by `npx wrangler kv namespace create KV`.
+[[kv_namespaces]]
+binding = "KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+# Your Worker's address, no trailing slash. Used for the OAuth redirect URI and the Origin check.
+PUBLIC_URL = "https://postbox.YOUR-ACCOUNT.workers.dev"
+# Raise only if your X account allows longer posts.
+MAX_CHARS = "280"
+
+[observability]
+enabled = true
