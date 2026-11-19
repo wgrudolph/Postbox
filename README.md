@@ -4,7 +4,7 @@
 
 <h1 align="center">Postbox</h1>
 
-<p align="center">A calm, send-only composer for Twitter—sorry, X.</p>
+<p align="center">A calm, send-only composer for Twitter (X).</p>
 
 You type, optionally add images or a thread, press **Send**, see "Sent.", and the page goes blank again. Postbox never shows anything from X. You will never interact with the algorithm.
 
@@ -16,7 +16,7 @@ You run your own copy. It's one Cloudflare Worker (frontend + a small API) and o
 - Posts up to 280 characters (configurable), with up to 4 images each
 - Threads: add more posts below the first and they go out as a reply chain
 - Your unsent draft survives a refresh
-- A password, so only you can use it
+- A password, so only you can access your account
 
 ## What it will never do
 
@@ -263,7 +263,7 @@ Browser ──(same origin)──▶ Worker ──▶ api.x.com   (only 5 allow-
 | `src/validate.ts` | Parses and validates the multipart post body (magic-byte image checks) |
 | `public/counter.js` | Weighted character counter, shared by browser and server |
 
-### The hard rules, and where they're enforced
+### Rules
 
 1. **No engagement data.** `xFetch` in `src/x.ts` refuses everything except `POST /2/oauth2/token`, `POST /2/oauth2/revoke`, `GET /2/users/me`, `POST /2/media/upload` and `POST /2/tweets`. It requires an exact path match, so query strings like `?user.fields=…` are refused too. A test scans `src/` and `public/` for metrics field names.
 2. **Nothing from X reaches the browser** except success/failure, a friendly reason, and your handle. Post IDs exist only in a local variable while a thread is being sent.
@@ -272,7 +272,7 @@ Browser ──(same origin)──▶ Worker ──▶ api.x.com   (only 5 allow-
 5. **Tokens stay on the server**, AES-GCM encrypted in KV. Logs contain only method, path, status code and error type.
 
 <details>
-<summary><strong>Design decisions</strong> (where the build spec was silent, contradicted itself, or differed from current docs)</summary>
+<summary><strong>Design decisions</strong></summary>
 
 1. **OAuth callback is authenticated by `state`, not the session cookie.** The session cookie is `SameSite=Strict`, so browsers don't send it on the redirect back from x.com. A cookie check on the callback would always fail. Instead, the callback requires a valid single-use `state` (32 random bytes, 10-minute TTL). Only a logged-in session can create one, through `/auth/x/start`.
 2. **Counter at exactly 0.** The spec says the counter turns amber at 0 *and* Send disables at 0, but also allows posts of up to `MAX_CHARS`. Postbox turns the counter amber at 0 and disables Send only below 0, so a full 280-character post can be sent.
