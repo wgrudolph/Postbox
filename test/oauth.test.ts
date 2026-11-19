@@ -65,6 +65,12 @@ describe("token refresh", () => {
     });
   });
 
+  it("treats tokens it can't decrypt as not connected and clears them", async () => {
+    await testEnv.KV.put("x_tokens", "bm90LWEtdmFsaWQtY2lwaGVydGV4dC1hdC1hbGw=");
+    await expect(getAccessToken(testEnv)).rejects.toBeInstanceOf(NotConnectedError);
+    expect(await testEnv.KV.get("x_tokens")).toBeNull();
+  });
+
   it("stores tokens encrypted, never in plain text", async () => {
     await saveTokens(testEnv, { access_token: "secret-access", refresh_token: "secret-refresh", expires_at: 1 });
     const raw = (await testEnv.KV.get("x_tokens"))!;

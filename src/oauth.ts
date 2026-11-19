@@ -139,7 +139,11 @@ export async function handleCallback(env: Env, url: URL): Promise<CallbackOutcom
 /** Returns a valid access token, refreshing (and persisting the rotated refresh token) if needed. */
 export async function getAccessToken(env: Env): Promise<string> {
   const tokens = await loadTokens(env);
-  if (!tokens) throw new NotConnectedError();
+  if (!tokens) {
+    // Missing, or undecryptable (e.g. TOKEN_ENC_KEY was rotated): clear it so the UI shows Connect.
+    await forgetTokens(env);
+    throw new NotConnectedError();
+  }
   if (tokens.expires_at - 60_000 > Date.now()) return tokens.access_token;
 
   if (!tokens.refresh_token) {
