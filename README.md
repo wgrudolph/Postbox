@@ -1,8 +1,8 @@
 # Postbox
 
-A calm, send-only composer for X. You type, optionally add images or a thread, press **Send**, see "Sent.", and the page goes blank again. Postbox never shows anything from X: no feed, likes, views, replies or follower counts.
+A calm, send-only composer for Twitter-sorry, X. You type, optionally add images or a thread, press **Send**, see "Sent.", and the page goes blank again. Postbox never shows anything from X. You will never interact with the algorithm.
 
-It's one Cloudflare Worker (frontend + a small API) and one Workers KV namespace. It's free at this scale and you deploy it with one command.
+Design: one Cloudflare Worker (frontend + a small API) and one Workers KV namespace. It's free (except for X API credits) and you deploy it with one command.
 
 ---
 
