@@ -299,3 +299,6 @@ Browser ──(same origin)──▶ Worker ──▶ api.x.com   (only 5 allow-
 ## Not built yet
 
 Unsend/cooling period, drafts list, scheduling, local archive, reply-audience setting, alt text, video/GIF, link-cost notice, multiple accounts, other networks. Most would slot into `postThread` (`src/x.ts`) and the composer state in `public/app.js`.
+
+
+*Created in one afternoon with Claude Code for a friend.*
